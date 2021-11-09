@@ -1,6 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Dimensions } from "react-native";
+
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function App() {
   return (
@@ -9,7 +11,7 @@ export default function App() {
         <View style={styles.city}>
           <Text style={styles.cityName}>Seoul</Text>
         </View>
-        <ScrollView style={styles.weather}>
+        <ScrollView horizontal contentContainerStyle={styles.weather}>
           <View style={styles.day}>
             <Text style={styles.temp}>27</Text>
             <Text style={styles.description}>Sunny</Text>
@@ -47,11 +49,9 @@ const styles = StyleSheet.create({
     fontSize: 48,
     fontWeight: "500",
   },
-  weather: {
-    flex: 3,
-  },
+  weather: {},
   day: {
-    flex: 1,
+    width: 300,
     alignItems: "center",
   },
   temp: {

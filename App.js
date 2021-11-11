@@ -7,12 +7,15 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
+  FlatList,
 } from "react-native";
 import * as Location from "expo-location";
 
 const API_KEY = "8f4d0ab3c9180ae0820be2bd2d43b0a4";
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
+
+const WEATHER_DATA = [{}];
 
 export default function App() {
   const [city, setCity] = useState("Loading...");
@@ -45,15 +48,31 @@ export default function App() {
   }, []);
   return (
     <>
+      <StatusBar />
       <View style={styles.container}>
         <View style={styles.city}>
           <Text style={styles.cityName}>{city}</Text>
         </View>
         <ScrollView
           pagingEnabled
-          horizontal
+          horizontal={true}
           showsHorizontalScrollIndicator="false"
           contentContainerStyle={styles.weather}
+          decelerationRate={0}
+          snapToInterval={SCREEN_WIDTH - 60 + 10} //your element width
+          snapToAlignment={"center"}
+          contentInset={{
+            // iOS ONLY
+            top: 0,
+            left: 30,
+            bottom: 0,
+            right: 30,
+          }}
+          contentContainerStyle={{
+            // contentInset alternative for Android
+            paddingHorizontal:
+              Platform.OS === "android" ? SCREEN_WIDTH - 60 : 0, // Horizontal spacing before and after the ScrollView
+          }}
         >
           {days.length === 0 ? (
             <View style={styles.day}>
@@ -81,28 +100,38 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "tomato",
+    backgroundColor: "white",
     flexDirection: "column",
   },
   city: {
-    flex: 1,
-    justifyContent: "center",
+    flex: 0.4,
+    marginTop: 90,
+    // marginBottom: 50,
+    // marginLeft: 30,
     alignItems: "center",
   },
   cityName: {
-    fontSize: 48,
+    fontSize: 32,
+    color: "#2A364E",
     fontWeight: "500",
   },
   weather: {},
   day: {
-    width: SCREEN_WIDTH,
+    height: 400,
+    width: SCREEN_WIDTH - 60,
+    backgroundColor: "#2A364E",
+    borderRadius: 40,
+    justifyContent: "center",
     alignItems: "center",
+    marginRight: 5,
+    marginLeft: 5,
   },
   temp: {
-    marginTop: 40,
-    fontSize: 130,
+    color: "black",
+    fontSize: 100,
   },
   description: {
-    fontSize: 40,
+    color: "white",
+    fontSize: 32,
   },
 });
